@@ -1,68 +1,26 @@
-# MeshCentral Agent
+# RemoteAgent
 
 ## Table of Contents
 
 [About](#about)  
-[Social Media](#social-media)  
 [MSH format](#msh-format)  
 [Self Test](#self-test)  
 [Feedback](#feedback)  
-[License](#license)
 ## About
 
-The MeshCentral Agent is the software that runs on remote devices and connects to the MeshCentral server to allow for remote device management. This agent is compiled for Windows, many different Linux distributions, macOS and FreeBSD. In addition compiled for many different processors x86-32, x86-64, ARM, MIPS. For most users, install the MeshCentral server first and install the agent from your server.
+The RemoteAgent is the software that runs on remote devices and connects to the RemoteSupport server to allow for remote device management. This agent is compiled for Windows, many different Linux distributions, macOS and FreeBSD. In addition compiled for many different processors x86-32, x86-64, ARM, MIPS. For most users, install the RemoteSupport server first and install the agent from your server.
 
-For more information, [visit MeshCentral.com](https://www.meshcentral.com).
-
-## Social Media
-[YouTube](https://www.youtube.com/channel/UCJWz607A8EVlkilzcrb-GKg/videos)  
-[Reddit](https://www.reddit.com/r/MeshCentral/)  
-[X](https://x.com/MeshCentral)  
-[BlogSpot](https://meshcentral2.blogspot.com/)  
-[LinkedIn](https://www.linkedin.com/groups/13067101/)  
 
 ## MSH format
-The MeshAgent gets it's security and connection instructions from a .msh text file formatted with each line being a "key=value". The .msh file is generally created by the MeshCentral server and, for example, would look like this:
+The RemoteAgent gets it's security and connection instructions from a .msh text file formatted with each line being a "key=value". The .msh file is generally created by the RemoteSupport server and, for example, would look like this:
 
 ```
-MeshName=MyComputers
-MeshType=2
-MeshID=0xEDBE1BE...
+RemoteName=MyComputers
+RemoteType=2
+RemoteID=0xEDBE1BE...
 ServerID=D99362D5...
-MeshServer=wss://example.com:443/agent.ashx
+RemoteServer=wss://example.com:443/agent.ashx
 ```
-
-Here is a list of the possible keys that are currently supported by the agent. Note that the key name must have the exact capitalization:
-
-| Option | Description |
-|---|---|
-| `AgentCapabilities` | Bitmask specifying supported agent capabilities. |
-| `agentName` | If set, sent to the server instead of the hostname. |
-| `compactDirtyMinimum` | Minimum dirty bytes threshold for the `db.compact()` operation. |
-| `consoleTextMaxRate` | Rate limit for `sendConsoleText`. Default is 10 messages per second. |
-| `controlChannelDebug` | If set, logs/displays control channel messages (except JSON messages). |
-| `controlChannelIdleTimeout` | Idle timeout in seconds; sends Ping/Pong to server to keep connection alive. |
-| `coreDumpEnabled` | If set, writes a dump file when the agent crashes. |
-| `disableUpdate` | If set, prevents the agent from self-updating. |
-| `noUpdateCoreModule` | If set, prevents the agent from accepting a new meshcore from the server. |
-| `enableILibRemoteLogging` | Port number to enable web logging. Disabled if not set. |
-| `fakeUpdate` | If set, agent self-updates to the same version. Sets `disableUpdate` on completion. |
-| `forceUpdate` | If set, causes the agent to perform a self-update on next start. |
-| `ignoreProxyFile` | If set, causes the agent to ignore any proxy settings. |
-| `logUpdate` | If set, causes the agent to log self-update status. |
-| `jsDebugPort` | Specifies a JS debugger port. |
-| `maxLogSize` | Maximum size of the error log file. |
-| `nocertstore` | Windows only. Forces the agent to use OpenSSL instead of WinCrypto for cert generation/storage. |
-| `readonly` | If set, forces the agent to open the database in read-only mode. |
-| `readmsh` | If set while db is in read-only mode, caches the local `.msh` file in the read-only db. |
-| `remoteMouseRender` | If set, always renders the remote mouse cursor for KVM. |
-| `showModuleNames` | If set, displays module names when loaded for the first time. |
-| `skipmaccheck` | If set, the agent will not change NodeID on local MAC address changes. |
-| `slaveKvmLog` | Linux only. Enables logging inside the child KVM process. |
-| `WebProxy` | Manually specifies proxy configuration. |
-
-Many of these values are used by developers and are not typically used in normal use.
-
 ## Special notes for BSD systems
 You'll need to mount procfs, which isn't mounted by default on FreeBSD. Add the following line to /etc/fstab
 ```
@@ -97,8 +55,8 @@ user-authority-in-system-dir=false
 
 
 ##	Special Note For ChromeOS:
-You need to disable rootfs verification, in order to install the meshagent service.
-After running the following commands, and rebooting, you should be able to install the meshagent service.
+You need to disable rootfs verification, in order to install the RemoteAgent service.
+After running the following commands, and rebooting, you should be able to install the RemoteAgent service.
 ```
 sudo su -
 cd /usr/share/vboot/bin/
@@ -114,7 +72,7 @@ When you are ready to install the agent, you'll need to copy the binary to a pat
 so that you can execute the installer from there.
 
 ## Self Test
-The MeshAgent has the ability to run a self test script, to aid in testing features of the Mesh Agent in consistent/reproducable fashion. 
+The RemoteAgent has the ability to run a self test script, to aid in testing features of the Mesh Agent in consistent/reproducable fashion. 
 
 There are two modes of operation of the self test:
 * Stand-alone Mode. This runs the tests in place directly from the command line
@@ -131,7 +89,7 @@ file from the modules folder of the agent repository to the folder where the age
 
 To start the test on Windows, from a command prompt, simply run the agent from the command line, with the --selfTest=1 switch:
 ```
-MeshAgent --selfTest=1
+RemoteAgent --selfTest=1
 ```
 The self test does not explicitly need an elevated command prompt to run, but some tests, such as the AMT tests require elevated permissions.
 
@@ -139,7 +97,7 @@ To start the test on other platforms, simply run the agent from a console sessio
 it can test features such as user consent. If you use SU to elevate the self test, it is best to pass in the -p flag, to preserve the envionment
 variables. To start the test, simply run the agent with the --selfTest=1 switch:
 ```
-./MeshAgent --selfTest=1
+./RemoteAgent --selfTest=1
 ```
 
 To run the self test in IPC Mode, requires a little more preparation. For security reasons, by default the agent does not allow running 'eval' 
@@ -195,8 +153,6 @@ In addition to the above tests, IPC Mode test adds the following tests:
 
 
 ## Feedback
-If you encounter a problem or have a suggestion to improve the product, you may file an [issue report](https://github.com/Ylianst/MeshAgent/issues/)
-
 If you are filing a problem report, you should include:
 * The version of the software you are using
 * The Operating System and version
@@ -204,6 +160,3 @@ If you are filing a problem report, you should include:
 * The expected output
 * Any troubleshooting you took to resolve the issue yourself
 * Any other similar reports
-
-## License
-This software is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
